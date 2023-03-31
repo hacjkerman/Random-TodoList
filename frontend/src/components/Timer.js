@@ -15,6 +15,8 @@ const formatTime = (time) => {
 function Timer(props) {
   const [time, setTime] = useState();
   const [isActive, setIsActive] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
+
   useEffect(() => {
     let interval = null;
     if (isActive) {
@@ -25,6 +27,7 @@ function Timer(props) {
       clearInterval(interval);
     }
     if (time === 0) {
+      setIsFinished(true);
       setIsActive(false);
     }
     return () => clearInterval(interval);
@@ -49,7 +52,7 @@ function Timer(props) {
 
   return (
     <div className="w-120 flex justify-between items-center">
-      <Modal />
+      <Modal finished={isFinished} />
       <Clock time={formatTime(time)} />
       <div>
         {!isActive ? (

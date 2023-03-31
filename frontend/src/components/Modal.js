@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Modal(props) {
+  console.log(props.finished);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    setShowModal(props.finished);
+    setShowModal(false);
+  }, [props.finished]);
+
   return (
     <>
       {showModal ? (

@@ -10,7 +10,6 @@ function TodoList() {
     time: "0",
   });
 
-  console.log("awfopwlfpoawek - " + currentTodoItem.time);
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -35,7 +34,6 @@ function TodoList() {
   const handleStartTodo = (index) => {
     let currTodo = todos[index];
     currTodo.time = currTodo.time * 60;
-    console.log(currTodo);
     setCurrentTodoItem(currTodo);
     handleDeleteTodo(index);
   };
