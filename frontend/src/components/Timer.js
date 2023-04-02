@@ -51,6 +51,7 @@ function Timer(props) {
 
   const handleReset = () => {
     setIsActive(false);
+    props.setTodo({ todo: "", time: "0" });
     setTime(0);
   };
 
