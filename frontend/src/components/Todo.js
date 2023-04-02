@@ -26,21 +26,36 @@ function TodoList() {
     }
   };
 
+  const handleRandomTodo = () => {
+    if (todos.length >= 2) {
+      const index = Math.floor(Math.random() * todos.length);
+      setCurrentTodoItem(todos[index]);
+      handleDeleteTodo(index);
+    } else {
+      return;
+    }
+  };
+
   const handleDeleteTodo = (index) => {
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
   };
+
   const handleStartTodo = (index) => {
-    let currTodo = todos[index];
-    currTodo.time = currTodo.time * 60;
-    setCurrentTodoItem(currTodo);
-    handleDeleteTodo(index);
+    if (currentTodoItem.todo === "") {
+      let currTodo = todos[index];
+      currTodo.time = currTodo.time * 60;
+      setCurrentTodoItem(currTodo);
+      handleDeleteTodo(index);
+    } else {
+      return;
+    }
   };
 
   return (
     <div className="max-w-xl mx-auto bg-white rounded-lg shadow-md p-4">
-      <Timer todo={currentTodoItem} />
+      <Timer todo={currentTodoItem} setTodo={setCurrentTodoItem} />
       <h2 className="text-xl font-bold mb-4">Todo List</h2>
       <div className="mb-4">
         <label className="block font-bold mb-2" htmlFor="todo-input">
@@ -69,6 +84,12 @@ function TodoList() {
         onClick={handleAddTodo}
       >
         Add Task
+      </button>
+      <button
+        className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mx-2"
+        onClick={handleRandomTodo}
+      >
+        Select Random Todo
       </button>
       <ul className="mt-4">
         {todos.map((todo, index) => (
