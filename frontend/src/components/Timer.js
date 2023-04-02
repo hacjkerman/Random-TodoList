@@ -21,13 +21,17 @@ function Timer(props) {
     let interval = null;
     if (isActive) {
       interval = setInterval(() => {
-        setTime((time) => time - 1);
+        setTime((time) => {
+          if (time - 1 === 0) {
+            setIsFinished(true);
+          }
+          return time - 1;
+        });
       }, 1000);
     } else if (!isActive && time !== 0) {
       clearInterval(interval);
     }
     if (time === 0) {
-      setIsFinished(true);
       setIsActive(false);
     }
     return () => clearInterval(interval);
@@ -52,30 +56,40 @@ function Timer(props) {
 
   return (
     <div className="w-120 flex justify-between items-center">
-      <Modal finished={isFinished} />
+      <Modal
+        finished={isFinished}
+        setFinished={setIsFinished}
+        todo={props.todo}
+      />
       <Clock time={formatTime(time)} />
       <div>
-        {!isActive ? (
+        <div className="flex justify-center text-2xl font-bold flex-col mb-5 bg-gray-700 rounded-md px-2 text-slate-300 py-2">
+          <div>Current Todo:</div>
+          <div>{props.todo.todo}</div>
+        </div>
+        <div>
+          {!isActive ? (
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded-md mx-2"
+              onClick={handleStart}
+            >
+              Start
+            </button>
+          ) : (
+            <button
+              className="bg-yellow-500 text-white px-4 py-2 rounded-md mx-2"
+              onClick={handlePause}
+            >
+              Pause
+            </button>
+          )}
           <button
-            className="bg-green-500 text-white px-4 py-2 rounded-md mx-2"
-            onClick={handleStart}
+            className="bg-red-500 text-white px-4 py-2 rounded-md mx-2"
+            onClick={handleReset}
           >
-            Start
+            Reset
           </button>
-        ) : (
-          <button
-            className="bg-yellow-500 text-white px-4 py-2 rounded-md mx-2"
-            onClick={handlePause}
-          >
-            Pause
-          </button>
-        )}
-        <button
-          className="bg-red-500 text-white px-4 py-2 rounded-md mx-2"
-          onClick={handleReset}
-        >
-          Reset
-        </button>
+        </div>
       </div>
     </div>
   );

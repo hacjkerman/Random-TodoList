@@ -39,7 +39,7 @@ function TodoList() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-4">
+    <div className="max-w-xl mx-auto bg-white rounded-lg shadow-md p-4">
       <Timer todo={currentTodoItem} />
       <h2 className="text-xl font-bold mb-4">Todo List</h2>
       <div className="mb-4">
