@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const startMongo = () => {
+const startMongo = (todoArray) => {
   mongoose
     .connect("mongodb://0.0.0.0:27017/newdb", {
       useNewUrlParser: true,
@@ -22,25 +22,21 @@ const startMongo = () => {
   db.on("error", console.error.bind(console, "connection error:"));
 
   db.once("open", function () {
-    console.log("Connection Successful!");
+    console.log("Success!");
 
     // define Schema
-    const BookSchema = new mongoose.Schema({
-      name: "string",
-      price: "string",
-      quantity: "string",
+    const TodoSchema = new mongoose.Schema({
+      todo: Array,
     });
-    const Book = mongoose.model("Book", BookSchema);
+    const Todo = mongoose.model("Todo", TodoSchema);
 
     // a document instance
-    const book1 = new Book({
-      name: "Introduction to Mongoose",
-      price: "10",
-      quantity: "25",
+    const todo1 = new Todo({
+      todo: todoArray,
     });
 
     // save model to database
-    book1.save();
+    todo1.save();
   });
 };
 

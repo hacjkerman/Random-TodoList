@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Timer from "./Timer";
+import postTodos from "./postTodos";
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
@@ -9,6 +10,11 @@ function TodoList() {
     todo: "",
     time: "0",
   });
+
+  useEffect(() => {
+    console.log("aerfgerg");
+    postTodos(todos);
+  }, [todos]);
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
