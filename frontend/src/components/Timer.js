@@ -60,6 +60,7 @@ function Timer(props) {
       <Modal
         finished={isFinished}
         setFinished={setIsFinished}
+        setCurrentTodo={props.setCurrentTodo}
         todo={props.todo}
       />
       <Clock time={formatTime(time)} />

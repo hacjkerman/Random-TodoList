@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from "react";
 import Timer from "./Timer";
 import postTodos from "./postTodos";
+import putCurrentTodo from "./putCurrentTodo";
+import putNewTodo from "./putNewTodo";
+import LoginPage from "./Login/Login";
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [timeValue, setTimeValue] = useState("");
+  const [newTodo, setNewTodo] = useState("");
   const [currentTodoItem, setCurrentTodoItem] = useState({
     todo: "",
     time: "0",
   });
 
   useEffect(() => {
-    console.log("aerfgerg");
-    postTodos(todos);
+    if (todos !== []) {
+      postTodos(todos, currentTodoItem);
+    } else {
+      if (newTodo !== "") {
+        putNewTodo(newTodo);
+        setNewTodo("");
+      }
+    } // eslint-disable-next-line
   }, [todos]);
+
+  useEffect(() => {
+    if (currentTodoItem.todo !== "") {
+    }
+  }, [currentTodoItem]);
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -27,13 +42,14 @@ function TodoList() {
   const handleAddTodo = () => {
     if (inputValue.trim() !== "" && timeValue.trim() !== "") {
       setTodos([...todos, { todo: inputValue.trim(), time: timeValue.trim() }]);
+      setNewTodo({ todo: inputValue.trim(), time: timeValue.trim() });
       setInputValue("");
       setTimeValue("");
     }
   };
 
   const handleRandomTodo = () => {
-    if (todos.length >= 2) {
+    if (todos.length >= 2 && currentTodoItem.todo === "") {
       const index = Math.floor(Math.random() * todos.length);
       setCurrentTodoItem(todos[index]);
       handleDeleteTodo(index);
@@ -61,7 +77,11 @@ function TodoList() {
 
   return (
     <div className="max-w-xl mx-auto bg-white rounded-lg shadow-md p-4">
-      <Timer todo={currentTodoItem} setTodo={setCurrentTodoItem} />
+      <Timer
+        todo={currentTodoItem}
+        setTodo={setCurrentTodoItem}
+        setCurrentTodo={setCurrentTodoItem}
+      />
       <h2 className="text-xl font-bold mb-4">Todo List</h2>
       <div className="mb-4">
         <label className="block font-bold mb-2" htmlFor="todo-input">

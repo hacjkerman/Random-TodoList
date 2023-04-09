@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  todo: String,
-  time: Number,
+  userId: String,
+  userName: String,
+  userPassword: String,
+  todo: [],
+  currentTodo: {},
 });
 
-export default function user() {
-  mongoose.model("User", userSchema);
-}
+export default mongoose.model("User", userSchema);
