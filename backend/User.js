@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   userName: String,
   userPassword: String,
   todo: [],
-  currentTodo: {},
+  currentTodo: [],
 });
 
 export default mongoose.model("User", userSchema);

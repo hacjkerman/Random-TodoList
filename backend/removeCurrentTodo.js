@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
-import User from "./User.js";
 import returnUser from "./returnUser.js";
 
 dotenv.config();
 
-const addCurrentTodo = async (userName, userPass, currentTodo) => {
+const removeTodo = async (userName, userPass, todo) => {
   mongoose
     .connect("mongodb://0.0.0.0:27017/newdb", {
       useNewUrlParser: true,
@@ -22,15 +21,14 @@ const addCurrentTodo = async (userName, userPass, currentTodo) => {
   const db = mongoose.connection;
 
   db.on("error", console.error.bind(console, "connection error:"));
-  console.log("awefawefwe");
   const user = await returnUser(userName, userPass);
   if (user === null) {
     return "No User Found";
   } else {
-    user.currentTodo[0] = currentTodo;
+    user.currentTodo = {};
     user.save();
     return user;
   }
 };
 
-export default addCurrentTodo;
+export default removeTodo;

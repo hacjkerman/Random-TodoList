@@ -1,30 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Timer from "./Timer";
-import postTodos from "./postTodos";
-import putCurrentTodo from "./putCurrentTodo";
-import putNewTodo from "./putNewTodo";
-import LoginPage from "./Login/Login";
+import addCurrentTodo from "./addCurrentTodo";
+import addNewTodo from "./addNewTodo";
+import removeTodo from "./removeTodo";
 
-function TodoList() {
-  const [todos, setTodos] = useState([]);
+function TodoList(props) {
+  const todos = props.todos;
+  const setTodos = props.setTodos;
+  const userName = props.username;
+  const userPass = props.password;
   const [inputValue, setInputValue] = useState("");
   const [timeValue, setTimeValue] = useState("");
-  const [newTodo, setNewTodo] = useState("");
   const [currentTodoItem, setCurrentTodoItem] = useState({
     todo: "",
     time: "0",
   });
-
-  useEffect(() => {
-    if (todos !== []) {
-      postTodos(todos, currentTodoItem);
-    } else {
-      if (newTodo !== "") {
-        putNewTodo(newTodo);
-        setNewTodo("");
-      }
-    } // eslint-disable-next-line
-  }, [todos]);
 
   useEffect(() => {
     if (currentTodoItem.todo !== "") {
@@ -41,8 +31,9 @@ function TodoList() {
 
   const handleAddTodo = () => {
     if (inputValue.trim() !== "" && timeValue.trim() !== "") {
-      setTodos([...todos, { todo: inputValue.trim(), time: timeValue.trim() }]);
-      setNewTodo({ todo: inputValue.trim(), time: timeValue.trim() });
+      const todo = { todo: inputValue.trim(), time: timeValue.trim() };
+      setTodos([...todos, todo]);
+      addNewTodo(userName, userPass, todo);
       setInputValue("");
       setTimeValue("");
     }
@@ -59,14 +50,17 @@ function TodoList() {
   };
 
   const handleDeleteTodo = (index) => {
+    removeTodo(userName, userPass, todos[index]);
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
   };
 
-  const handleStartTodo = (index) => {
+  const handleStartTodo = async (index) => {
     if (currentTodoItem.todo === "") {
       let currTodo = todos[index];
+      addCurrentTodo(userName, userPass, currTodo);
+      await removeTodo(userName, userPass, currTodo);
       currTodo.time = currTodo.time * 60;
       setCurrentTodoItem(currTodo);
       handleDeleteTodo(index);

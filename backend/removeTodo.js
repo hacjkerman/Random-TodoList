@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
-import User from "./User.js";
-import { v4 as uuidv4 } from "uuid";
+import returnUser from "./returnUser.js";
 
 dotenv.config();
 
-const startMongo = (userName, userPass) => {
+const removeTodo = async (userName, userPass, todo) => {
   mongoose
     .connect("mongodb://0.0.0.0:27017/newdb", {
       useNewUrlParser: true,
@@ -22,17 +21,16 @@ const startMongo = (userName, userPass) => {
   const db = mongoose.connection;
 
   db.on("error", console.error.bind(console, "connection error:"));
-
-  db.once("open", function () {
-    const uuid = uuidv4();
-    const newUser = new User({
-      userId: uuid,
-    });
-    console.log("Success!");
-
-    // save model to database
-    newUser.save();
-  });
+  const user = await returnUser(userName, userPass);
+  if (user === null) {
+    return "No User Found";
+  } else {
+    user.todo = user.todo.filter(
+      (item) => item.todo !== todo.todo && item.time !== todo.time
+    );
+    user.save();
+    return user;
+  }
 };
 
-export default startMongo;
+export default removeTodo;

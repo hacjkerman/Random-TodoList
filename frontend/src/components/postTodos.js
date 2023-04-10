@@ -1,5 +1,4 @@
-async function postTodos(todoArray, todoItem) {
-  console.log(todoArray);
+async function addTodos(todoArray, todoItem) {
   const response = await fetch("http://localhost:8080/store", {
     method: "POST",
     headers: {
@@ -10,4 +9,4 @@ async function postTodos(todoArray, todoItem) {
   return response.json();
 }
 
-export default postTodos;
+export default addTodos;

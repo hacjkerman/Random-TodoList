@@ -31,6 +31,8 @@ const createUser = async (newUserName, newUserPass) => {
       userId: uuid,
       userName: newUserName,
       userPassword: newUserPass,
+      todo: [],
+      currentTodo: { todo: "", time: "0" },
     });
 
     // save model to database

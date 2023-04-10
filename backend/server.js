@@ -7,6 +7,7 @@ import createUser from "./createUser.js";
 import returnUser from "./returnUser.js";
 import addTodo from "./addTodo.js";
 import addCurrentTodo from "./addCurrentTodo.js";
+import removeTodo from "./removeTodo.js";
 
 dotenv.config();
 
@@ -22,13 +23,19 @@ app.get("/", (req, res) => {
   res.send("Hello");
 });
 
-app.put("/newTodo", (req, res) => {
+app.post("/newTodo", (req, res) => {
   const { userName, userPass, todo } = req.body;
   addTodo(userName, userPass, todo);
   res.json("new Todo added");
 });
 
-app.put("/newCurrentTodo", (req, res) => {
+app.delete("/removeTodo", (req, res) => {
+  const { userName, userPass, todo } = req.body;
+  removeTodo(userName, userPass, todo);
+  res.json("Todo item removed");
+});
+
+app.post("/newCurrentTodo", (req, res) => {
   const { userName, userPass, todo } = req.body;
   addCurrentTodo(userName, userPass, todo);
   res.json("new Current Todo added");
